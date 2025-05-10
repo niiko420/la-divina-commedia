@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Divina Commedia | Dante Alighieri</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+        :root {
+            --inferno: #aa0000;
+            --purgatorio: #0066cc;
+            --paradiso: #f5bd1f;
+            --main-bg: #f3f4f6;
+            --secondary-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--main-bg);
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1000/500');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .cantica-card-inferno:hover {
+            border-color: var(--inferno);
+            box-shadow: 0 5px 15px rgba(170, 0, 0, 0.2);
+        }
+
+        .cantica-card-purgatorio:hover {
+            border-color: var(--purgatorio);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.2);
+        }
+
+        .cantica-card-paradiso:hover {
+            border-color: var(--paradiso);
+            box-shadow: 0 5px 15px rgba(245, 189, 31, 0.2);
+        }
+
+        .text-inferno { color: var(--inferno); }
+        .text-purgatorio { color: var(--purgatorio); }
+        .text-paradiso { color: var(--paradiso); }
+        
+        .border-inferno { border-color: var(--inferno); }
+        .border-purgatorio { border-color: var(--purgatorio); }
+        .border-paradiso { border-color: var(--paradiso); }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .scroll-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            transition: opacity 0.3s;
+        }
+
+        .card-transition {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-transition:hover {
+            transform: translateY(-5px);
+        }
+
+        .bg-uniform-light {
+            background-color: var(--secondary-bg);
+        }
+
+        .bg-uniform-dark {
+            background-color: var(--main-bg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
+            <div class="flex items-center">
+                <a href="index.html" class="font-semibold text-xl md:text-2xl font-serif tracking-tight">
+                    Divina Commedia
+                </a>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden flex items-center px-3 py-2 border rounded text-gray-700 border-gray-700 hover:text-gray-900 hover:border-gray-900">
+                <svg class="h-3 w-3 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+                </svg>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div id="nav-menu" class="hidden md:flex md:items-center w-full md:w-auto">
+                <div class="md:flex-grow text-center md:text-left">
+                    <a href="index.html" class="block mt-4 md:inline-block md:mt-0 mr-6 nav-link text-gray-700 hover:text-gray-900">
+                        Home
+                    </a>
+                    <a href="biografia.html" class="block mt-4 md:inline-block md:mt-0 mr-6 nav-link text-gray-700 hover:text-gray-900">
+                        Biografia
+                    </a>
+        
+                    <a href="timeline.html" class="block mt-4 md:inline-block md:mt-0 mr-6 nav-link text-gray-700 hover:text-gray-900">
+                        Timeline
+                    </a>
+                    <a href="quiz.html" class="block mt-4 md:inline-block md:mt-0 mr-6 nav-link text-gray-700 hover:text-gray-900">
+                        Quiz
+                    </a>
+                    <a href="chatbot.html" class="block mt-4 md:inline-block md:mt-0 nav-link text-gray-700 hover:text-gray-900">
+                        Chatbot
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="py-4 text-center bg-gradient-to-r from-red-100 via-blue-100 to-yellow-100">
+        <h1 class="text-3xl md:text-4xl font-bold">Chat della Divina Commedia</h1>
+    </section>
+
+    <div class="flex flex-1 overflow-hidden">
+        <div id="sidebar" class="w-64 bg-white shadow-md p-4 space-y-4 transition-transform duration-300">
+            <button onclick="            toggleSidebar()" class="text-gray-600 hover:text-gray-900">✕</button>
+            <div onclick="selectCharacter('Dante')" class="flex items-center p-2 hover:bg-gray-100 cursor-pointer rounded">
+                <img src="img/dante.png" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                    <p class="font-bold">Dante</p>
+                    <p class="text-xs text-gray-500">Poeta dell'aldilà</p>
+                </div>
+            </div>
+            <div onclick="selectCharacter('Virgilio')" class="flex items-center p-2 hover:bg-gray-100 cursor-pointer rounded">
+                <img src="img/virgilio.jpg" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                    <p class="font-bold">Virgilio</p>
+                    <p class="text-xs text-gray-500">Guida razionale</p>
+                </div>
+            </div>
+            <div onclick="selectCharacter('Beatrice')" class="flex items-center p-2 hover:bg-gray-100 cursor-pointer rounded">
+                <img src="img/beatrice.jpg" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                    <p class="font-bold">Beatrice</p>
+                    <p class="text-xs text-gray-500">Simbolo di fede</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col">
+            <div class="bg-white shadow px-4 py-2 flex items-center justify-between">
+                <button onclick="toggleSidebar()" class="text-gray-600 hover:text-gray-900">☰</button>
+                <h2 class="font-bold text-lg">Chat con <span id="chatTitle">Dante</span></h2>
+                <div></div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chatWindow">
+                </div>
+
+            <div class="p-4 flex">
+                <input id="userInput" type="text" placeholder="Scrivi il tuo messaggio..." 
+                       class="flex-1 border rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button id="sendBtn" class="bg-green-600 text-white px-4 rounded-r hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-800">
+                    Invia
+                </button>
+            </div>
+        </div>
+    </div>
+
+   <script>
+// ======================
+// CONFIGURAZIONE INIZIALE
+// ======================
+const characters = {
+  Dante: {
+    description: "Il Sommo Poeta, autore della Divina Commedia",
+    affinity: 0,
+    mood: "neutro", // neutro, felice, irritato, commosso
+    quotes: {
+      inferno: [
+        `"Per me si va ne la città dolente,\nper me si va ne l'etterno dolore,\nper me si va tra la perduta gente."`,
+        `"Lasciate ogne speranza, voi ch'intrate."`
+      ],
+      purgatorio: [
+        `"Puro e disposto a salire a le stelle."`,
+        `"Libero, dritto e sano è tuo arbitrio."`
+      ],
+      paradiso: [
+        `"L'amor che move il sole e l'altre stelle."`,
+        `"E quindi uscimmo a riveder le stelle."`
+      ],
+      default: [
+        `"Considerate la vostra semenza:\nfatti non foste a viver come bruti,\nma per seguir virtute e canoscenza."`,
+        `"Oh anime ignave, che mai non fur vive..."`
+      ]
+    }
+  },
+  Virgilio: {
+    description: "Guida di Dante, poeta dell'Eneide",
+    affinity: 0,
+    mood: "neutro",
+    quotes: {
+      eneide: [
+        `"Audentes fortuna iuvat.\n(La fortuna aiuta gli audaci)"`,
+        `"Arma virumque cano...\n(Canto le armi e l'uomo)"`
+      ],
+      filosofia: [
+        `"Felix qui potuit rerum cognoscere causas.\n(Beato chi ha potuto conoscere le cause delle cose)"`,
+        `"Anch'io fui tra color che sospirar\nper la dolcezza del tuo insegnamento."`
+      ],
+      default: [
+        `"Come nell'Eneide dissi:\n'Sunt lacrimae rerum et mentem mortalia tangunt.'\n(Ci sono lacrime per le cose e la mortalità tocca l'anima)"`,
+        `"La ragione è la tua miglior guida,\ncome lo fui per Dante."`
+      ]
+    }
+  },
+  Beatrice: {
+    description: "Guida di Dante in Paradiso, simbolo di grazia divina",
+    affinity: 0,
+    mood: "neutro",
+    quotes: {
+      amore: [
+        `"Amor, ch'al cor gentil ratto s'apprende."`,
+        `"Tu non se' in terra, sì come tu credi."`
+      ],
+      divino: [
+        `"La gloria di colui che tutto move\nper l'universo penetra e risplende."`,
+        `"E' la luce divina che ti avvolge."`
+      ],
+      default: [
+        `"Volgi i tuoi occhi al bene supremo,\ne lascia dietro a te le cure mondane."`,
+        `"Come angelo di luce, ti conduco\nverso l'amor che move il cielo e le stelle."`
+      ]
+    }
+  }
+};
+
+let currentCharacter = "Dante";
+let conversationHistory = [];
+
+// ======================
+// FUNZIONI DI SUPPORTO
+// ======================
+function detectTone(text) {
+  const lowerText = text.toLowerCase();
+  if (/(\!$|per favore|aiuto)/.test(lowerText)) return "emotivo";
+  if (/\?$/.test(text)) return "curioso";
+  if (/grazie|bello|meraviglioso|perfetto/.test(lowerText)) return "positivo";
+  if (/noioso|odio|stupido|fastidioso/.test(lowerText)) return "negativo";
+  return "neutro";
+}
+
+function updateAffinity(tone) {
+  switch(tone) {
+    case "positivo": characters[currentCharacter].affinity += 1; break;
+    case "negativo": characters[currentCharacter].affinity -= 2; break;
+    case "emotivo": characters[currentCharacter].affinity += 0.5; break;
+  }
+  
+  // Aggiorna umore
+  const char = characters[currentCharacter];
+  if (char.affinity >= 3) char.mood = "felice";
+  else if (char.affinity <= -2) char.mood = "irritato";
+  else char.mood = "neutro";
+}
+
+function getMoodResponse() {
+  const char = characters[currentCharacter];
+  
+  switch(char.mood) {
+    case "felice":
+      if (currentCharacter === "Dante") return "\n\n(Sorride) Dimmi altro, figlio mio.";
+      if (currentCharacter === "Virgilio") return "\n\n(Accenna un raro sorriso)";
+      return "\n\n(La sua luce si fa più intensa)";
+      
+    case "irritato":
+      if (currentCharacter === "Dante") return "\n\n(Agita le mani) Ahi, quanto mi turbano queste parole!";
+      if (currentCharacter === "Virgilio") return "\n\n(Sospira) La pazienza è virtù dei saggi...";
+      return "\n\n(Il suo sguardo si fa severo)";
+      
+    case "commosso":
+      return "\n\n(La voce trema leggermente)";
+      
+    default:
+      return "";
+  }
+}
+
+// ======================
+// RISPOSTE DEI PERSONAGGI
+// ======================
+function getDanteResponse(userMsg, tone) {
+  const lowerMsg = userMsg.toLowerCase();
+  let response = "";
+
+  // Interazioni speciali
+  if (/(fiorenza|firenze)/.test(lowerMsg)) {
+    updateAffinity("negativo");
+    response = `"Ahi serva Italia, di dolore ostello,\nnave sanza nocchiere in gran tempesta...\nFirenze mi ha esiliato!`;
+  } 
+  else if (/(beatrice|amore)/.test(lowerMsg)) {
+    updateAffinity("positivo");
+    characters.Dante.mood = "commosso";
+    response = `"Oh Beatrice! O dolce guida mia...\nElla mi trasse seco, e qui m'è luce,\ncom'uom che, tacito, a parlar disvia."`;
+  }
+  else if (/(inferno)/.test(lowerMsg)) {
+    response = characters.Dante.quotes.inferno[Math.floor(Math.random() * characters.Dante.quotes.inferno.length)];
+  }
+  else if (/(purgatorio)/.test(lowerMsg)) {
+    response = characters.Dante.quotes.purgatorio[Math.floor(Math.random() * characters.Dante.quotes.purgatorio.length)];
+  }
+  else if (/(paradiso)/.test(lowerMsg)) {
+    response = characters.Dante.quotes.paradiso[Math.floor(Math.random() * characters.Dante.quotes.paradiso.length)];
+  }
+  else {
+    response = characters.Dante.quotes.default[Math.floor(Math.random() * characters.Dante.quotes.default.length)];
+  }
+
+  return response + getMoodResponse();
+}
+
+function getVirgilioResponse(userMsg, tone) {
+  const lowerMsg = userMsg.toLowerCase();
+  let response = "";
+
+  if (/(eneide|troia|didone)/.test(lowerMsg)) {
+    updateAffinity("positivo");
+    response = characters.Virgilio.quotes.eneide[Math.floor(Math.random() * characters.Virgilio.quotes.eneide.length)];
+  }
+  else if (/(filosofia|ragione|logica)/.test(lowerMsg)) {
+    response = characters.Virgilio.quotes.filosofia[Math.floor(Math.random() * characters.Virgilio.quotes.filosofia.length)];
+  }
+  else if (/(dante|allievo)/.test(lowerMsg)) {
+    characters.Virgilio.mood = "felice";
+    response = `"Guidai Dante attraverso l'Inferno,\nma nel Paradiso la mia ragione non basta.\nLa filosofia ha i suoi limiti."`;
+  }
+  else {
+    response = characters.Virgilio.quotes.default[Math.floor(Math.random() * characters.Virgilio.quotes.default.length)];
+  }
+
+  return response + getMoodResponse();
+}
+
+function getBeatriceResponse(userMsg, tone) {
+  const lowerMsg = userMsg.toLowerCase();
+  let response = "";
+
+  if (/(amore|cuore)/.test(lowerMsg)) {
+    response = characters.Beatrice.quotes.amore[Math.floor(Math.random() * characters.Beatrice.quotes.amore.length)];
+  }
+  else if (/(dio|paradiso|divino|preghiera)/.test(lowerMsg)) {
+    updateAffinity("positivo");
+    response = characters.Beatrice.quotes.divino[Math.floor(Math.random() * characters.Beatrice.quotes.divino.length)];
+  }
+  else if (/(dante|poeta)/.test(lowerMsg)) {
+    characters.Beatrice.mood = "commosso";
+    response = `"Condussi Dante alla visione di Dio...\nIl suo amore per me era riflesso\ndell'Amor che move il sole e l'altre stelle."`;
+  }
+  else {
+    response = characters.Beatrice.quotes.default[Math.floor(Math.random() * characters.Beatrice.quotes.default.length)];
+  }
+
+  return response + (tone === "emotivo" ? "\n\n(La sua voce risuona come musica celeste)" : "") + getMoodResponse();
+}
+
+// ======================
+// FUNZIONI PRINCIPALI
+// ======================
+async function fetchResponse(userMsg) {
+  const tone = detectTone(userMsg);
+  updateAffinity(tone);
+  conversationHistory.push(userMsg);
+  
+  // Simula ritardo di risposta
+  await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
+  
+  switch(currentCharacter.toLowerCase()) {
+    case "dante": return getDanteResponse(userMsg, tone);
+    case "virgilio": return getVirgilioResponse(userMsg, tone);
+    case "beatrice": return getBeatriceResponse(userMsg, tone);
+    default: return "Personaggio non riconosciuto.";
+  }
+}
+
+function selectCharacter(newChar) {
+  if (characters[newChar]) {
+    currentCharacter = newChar;
+    chatTitle.textContent = newChar;
+    displayMessage("Sistema", `Ora parli con ${newChar}.\n${characters[newChar].description}`);
+  }
+}
+
+function toggleSidebar() {
+  isSidebarVisible = !isSidebarVisible;
+  if (isSidebarVisible) {
+    sidebar.classList.remove('sidebar-hidden');
+  } else {
+    sidebar.classList.add('sidebar-hidden');
+  }
+}
+
+// Funzione per mostrare un messaggio nella chat
+function displayMessage(sender, message, isTyping = false) {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('p-3', 'rounded', 'mb-2', 'max-w-xs', 'md:max-w-md', 'lg:max-w-lg');
+  
+  if (sender === "Utente") {
+    messageDiv.classList.add('ml-auto', 'bg-green-100', 'text-gray-800');
+  } else if (sender === "Sistema") {
+    messageDiv.classList.add('mx-auto', 'bg-gray-100', 'text-gray-800', 'italic', 'text-sm');
+  } else {
+    messageDiv.classList.add('mr-auto', 'bg-blue-100', 'text-gray-800');
+  }
+  
+  if (isTyping) {
+    messageDiv.classList.add('typing-indicator');
+    messageDiv.textContent = "Sta scrivendo";
+  } else {
+    messageDiv.textContent = message.replace(/\n/g, '\n');
+    
+    // Format text with line breaks
+    messageDiv.innerHTML = messageDiv.textContent.replace(/\n/g, '<br>');
+  }
+  
+  chatWindow.appendChild(messageDiv);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  
+  return messageDiv;
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Display welcome message
+  displayMessage("Sistema", `Benvenuto al chatbot della Divina Commedia! Stai parlando con ${currentCharacter}.`);
+  
+  // Send button click
+  sendBtn.addEventListener('click', sendMessage);
+  
+  // Enter key press
+  userInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+});
+
+async function sendMessage() {
+  const userMsg = userInput.value.trim();
+  if (userMsg === "") return;
+  
+  // Display user message
+  displayMessage("Utente", userMsg);
+  userInput.value = "";
+  
+  // Display typing indicator
+  const typingIndicator = displayMessage(currentCharacter, "", true);
+  
+  // Fetch response
+  const response = await fetchResponse(userMsg);
+  
+  // Remove typing indicator and display response
+  chatWindow.removeChild(typingIndicator);
+  displayMessage(currentCharacter, response);
+}
+    </script>
+</body>
+</html>
